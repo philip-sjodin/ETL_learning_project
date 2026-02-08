@@ -43,23 +43,25 @@ Later I will break it on purpose for my learning.
 
 
 ## Current Project Structure
+```
 project/
 ├── data/
-│ └── raw/
-│ ├── customers.csv
-│ ├── products.csv
-│ ├── orders.csv
-│ └── order_items.csv
+│   └── raw/
+│       ├── customers.csv
+│       ├── products.csv
+│       ├── orders.csv
+│       └── order_items.csv
 ├── etl/
-│ ├── loader.py
-│ ├── validator.py
-│ └── pipeline.py
+│   ├── loader.py
+│   ├── validator.py
+│   └── pipeline.py
 ├── utils/
-│ ├── file_io.py
-│ └── logger.py
-├── tests/ # not used yet
+│   ├── file_io.py
+│   └── logger.py
+├── tests/              # not used yet
 ├── .gitignore
 └── README.md
+```
 
 ## How to run
 From the project root:
