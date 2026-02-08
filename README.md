@@ -45,15 +45,15 @@ Later I will break it on purpose for my learning.
 ## Current Project Structure
 project/
 ├── data/
-│   └── raw/
+│ └── raw/
 ├── etl/
-│   ├── loader.py
-│   ├── validators.py
-│   └── pipeline.py
+│ ├── loader.py
+│ ├── validator.py
+│ └── pipeline.py
 ├── utils/
-│   ├── file_io.py
-│   └── logger.py
-├── tests/      # not used yet
+│ ├── file_io.py
+│ └── logger.py
+├── tests/ # not used yet
 ├── .gitignore
 └── README.md
 
