@@ -1,20 +1,29 @@
 from etl.loader import load
-from etl.validators import (
-    assert_required_colums,
-    assert_pk_not_null, 
-    assert_pk_unique
-)
+from etl.validators import validate_schema
+from etl.transformer import build_order_lines_dataset
+
 
 def run_pipeline() -> None:
     customers = load("customers.csv")
+    orders = load("orders.csv")
+    order_items = load("order_items.csv")
+    products = load("products.csv")
 
-    REQUIRED = {"customer_id", "name", "email", "country"}
+    validate_schema(customers, {"customer_id", "name", "email"}, "customer_id", "customers")
+    validate_schema(orders, {"order_id", "customer_id", "order_date"}, "order_id", "orders")
+    validate_schema(products, {"product_id", "name", "price"}, "product_id", "products")
+    validate_schema(
+        order_items,
+        {"order_item_id", "order_id", "product_id", "quantity"},
+        "order_item_id",
+        "order_items",
+    )
 
-    assert_required_colums(customers, REQUIRED, "customers")
-    assert_pk_not_null(customers, "customer_id", "customers")
-    assert_pk_unique(customers, "customer_id", "customers")
+    order_lines = build_order_lines_dataset(
+        orders=orders, order_items=order_items, products=products,
+    )
 
-    print("Pipeline OK: customers validated")
+    print("Pipeline OK")
 
 
 if __name__ == "__main__":

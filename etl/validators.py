@@ -15,3 +15,9 @@ def assert_pk_unique(df: pd.DataFrame, pk: str, table_name: str) -> None:
     if not df[pk].is_unique:
         duplicates = df[pk][df[pk].duplicated()].unique()
         raise ValueError(f"{table_name}: does not have unique primary key '{pk}': \n{duplicates}")
+    
+
+def validate_schema(df: pd.DataFrame, required: set[str], pk: str, table_name: str) -> None:
+    assert_required_colums(df, required, table_name)
+    assert_pk_not_null(df, pk, table_name)
+    assert_pk_unique(df, pk, table_name)

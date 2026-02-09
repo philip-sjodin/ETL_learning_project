@@ -4,17 +4,17 @@ from typing import Any
 from pathlib import Path
 
 
-def load_from_json(file_path: str | Path) -> Any:
+def read_json(file_path: str | Path) -> Any:
     file_path = Path(file_path)
 
     if not file_path.exists():
-        raise FileNotFoundError(f"file {file_path} does not exist.")
+        raise FileNotFoundError(f"File: {file_path} does not exist.")
     
     with open(file_path, "r", encoding="utf-8") as f:
         return json.load(f)
 
 
-def save_to_json(file_path: str | Path, data: Any) -> None:
+def write_json(file_path: str | Path, data: Any) -> None:
     file_path = Path(file_path)
 
     if data is None:
@@ -26,7 +26,7 @@ def save_to_json(file_path: str | Path, data: Any) -> None:
         json.dump(data, f, indent=4, ensure_ascii=False)
 
 
-def load_from_csv(file_path: str | Path) -> list[dict[str, str]]:
+def read_csv(file_path: str | Path) -> list[dict[str, str]]:
     file_path = Path(file_path)
 
     if not file_path.exists():
@@ -46,7 +46,7 @@ def load_from_csv(file_path: str | Path) -> list[dict[str, str]]:
     return rows
 
 
-def save_to_csv(file_path: str | Path, data: list[dict[str, Any]]) -> None:
+def write_csv(file_path: str | Path, data: list[dict[str, Any]]) -> None:
     file_path = Path(file_path)
     
     if not data:
@@ -59,6 +59,9 @@ def save_to_csv(file_path: str | Path, data: list[dict[str, Any]]) -> None:
 
     if not fieldnames:
         raise ValueError("Data has no fields.")
+    
+    if not all(isinstance(field, str) for field in fieldnames):
+        raise ValueError("All field names must be strings.")
     
     if not all(row.keys() == fieldnames for row in data):
         raise ValueError("Inconsistent fields across rows.")
