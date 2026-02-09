@@ -11,21 +11,25 @@ Still work in progress.
 ## What i've done so far
 **utils/file_io.py**
 Helper functions for loading and saving CSV and JSON files.
+
 **etl/loader.py**
 Loads CSV files and turns them into pandas DataFrames.
+
 **etl/validators.py**
 Currently just a very simple validator to check for:
 - required columns exist
 - primary keys are not null
 - primary keys are unique
+
 **etl/pipeline.py**
-First draft of the pipeline:
+Orchestrates ETL flow:
 - loads the data
-- validates the data
+- validates schemas and primary keys
+- runs transformations
 - stops if something goes wrong
 
-No transformation layer yet.
-This is according to plan.
+**etl/transformer.py**
+Joins tables together and checks for missing and mismatched data.
 
 
 ## Example data
@@ -53,7 +57,7 @@ project/
 │       └── order_items.csv
 ├── etl/
 │   ├── loader.py
-│   ├── validator.py
+│   ├── validators.py
 │   ├── transformer.py
 │   └── pipeline.py
 ├── utils/
@@ -80,7 +84,7 @@ This project exists so I can:
 - practice Python and Git
 - learn by making mistakes
 
-This is not finished project.
+This is not a finished project.
 Its a learning project.
 
 
