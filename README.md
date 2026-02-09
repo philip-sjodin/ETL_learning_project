@@ -12,8 +12,12 @@ Still work in progress.
 **utils/file_io.py**
 Helper functions for loading and saving CSV and JSON files.
 
+**utils/logger.py**
+Logger used across all modules.
+DEBUG and INFO levels.
+
 **etl/loader.py**
-Loads CSV files and turns them into pandas DataFrames.
+Loads CSV files into pandas DataFrames with dtype casting
 
 **etl/validators.py**
 Currently just a very simple validator to check for:

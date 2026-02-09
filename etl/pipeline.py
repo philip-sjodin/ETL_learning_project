@@ -1,9 +1,13 @@
 from etl.loader import load
 from etl.validators import validate_schema
 from etl.transformer import build_order_lines_dataset
+from utils.logger import get_logger
+
+logger = get_logger("etl.pipeline")
 
 
 def run_pipeline() -> None:
+    logger.info("Loading RAW data")
     orders = load("orders.csv", dtypes={"order_id": int, "customer_id": int})
     products = load("products.csv", dtypes={"product_id": int, "price": float})
     order_items = load("order_items.csv", dtypes={"order_id": int, "product_id": int, "quantity": int})
@@ -37,8 +41,7 @@ def run_pipeline() -> None:
     order_lines = build_order_lines_dataset(
         orders=orders, order_items=order_items, products=products,
     )
-
-    print("Pipeline OK")
+    logger.info("Pipeline OK")
 
 
 if __name__ == "__main__":

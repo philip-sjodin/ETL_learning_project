@@ -1,15 +1,23 @@
 import pandas as pd
+from utils.logger import get_logger
 
+logger = get_logger("etl.transformer")
 
 def join_order_items_with_orders(order_items: pd.DataFrame, orders: pd.DataFrame) -> pd.DataFrame:
+    logger.debug("Joining order_items with orders on order_id")
+
     return order_items.merge(orders, on="order_id", how="left", validate="many_to_one")
 
 
 def join_orders_items_with_products(order_lines: pd.DataFrame, products: pd.DataFrame) -> pd.DataFrame:
+    logger.debug("Joining order_lines with products on product_id")
+
     return order_lines.merge(products, on="product_id", how="left", validate="many_to_one")
 
 
 def assert_no_orphan_products(order_lines: pd.DataFrame, products: pd.DataFrame) -> None:
+    logger.debug("Checking for orphan product_ids")
+
     if "product_id" not in order_lines.columns:
         raise ValueError("order_lines: 'product_id' column missing")
     
@@ -24,6 +32,7 @@ def assert_no_orphan_products(order_lines: pd.DataFrame, products: pd.DataFrame)
         )
     
 def assert_no_orphan_orders(order_items: pd.DataFrame, orders: pd.DataFrame) -> None:
+    logger.debug("Checking for orphan order_ids")
     if "order_id" not in order_items.columns:
         raise ValueError("order_items: 'order_id' column missing")
     
@@ -48,5 +57,9 @@ def build_order_lines_dataset(
     order_lines = join_order_items_with_orders(order_items, orders)
     assert_no_orphan_products(order_lines, products)
     order_lines = join_orders_items_with_products(order_lines, products)
+
+    order_lines["line_total"] = order_lines["quantity"] * order_lines["price"]
+
+    logger.info(f"order_lines built: {len(order_lines)} rows")
 
     return order_lines
